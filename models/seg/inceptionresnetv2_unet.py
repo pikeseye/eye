@@ -43,10 +43,10 @@ def build_model(input_shape):
     b1 = ZeroPadding2D((1, 1))(b1)                      ## (32 x 32)
 
     """ Decoder """
-    d1 = decoder_block(b1, s4, 512)                     ## (64 x 64)
-    d2 = decoder_block(d1, s3, 256)                     ## (128 x 128)
-    d3 = decoder_block(d2, s2, 128)                     ## (256 x 256)
-    d4 = decoder_block(d3, s1, 64)                      ## (512 x 512)
+    d1 = decoder_block(b1, s4, input_shape[0])                     ## (64 x 64)
+    d2 = decoder_block(d1, s3, input_shape[0]/2)                     ## (128 x 128)
+    d3 = decoder_block(d2, s2, input_shape[0]/4)                     ## (256 x 256)
+    d4 = decoder_block(d3, s1, input_shape[0]/8)                      ## (512 x 512)
 
     """ Outputs """
     outputs = Conv2D(1, 1, padding="same", activation="sigmoid")(d4)

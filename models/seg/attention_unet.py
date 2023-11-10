@@ -43,16 +43,16 @@ def build_model(input_shape):
     inputs = layers.Input(input_shape)
 
     """ Encoder """
-    s1, p1 = encoder_block(inputs, 64)
-    s2, p2 = encoder_block(p1, 128)
-    s3, p3 = encoder_block(p2, 256)
+    s1, p1 = encoder_block(inputs, input_shape[0]/4)
+    s2, p2 = encoder_block(p1, input_shape[0]/2)
+    s3, p3 = encoder_block(p2, input_shape[0])
 
     b1 = conv_block(p3, 512)
 
     """ Decoder """
-    d1 = decoder_block(b1, s3, 256)
-    d2 = decoder_block(d1, s2, 128)
-    d3 = decoder_block(d2, s1, 64)
+    d1 = decoder_block(b1, s3, input_shape[0])
+    d2 = decoder_block(d1, s2, input_shape[0]/2)
+    d3 = decoder_block(d2, s1, input_shape[0]/4)
 
     """ Outputs """
     outputs = layers.Conv2D(1, 1, padding="same", activation="sigmoid")(d3)

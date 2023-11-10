@@ -93,7 +93,7 @@ def output_block(inputs):
     return x
 
 def encoder2(inputs):
-    num_filters = [32, 64, 128, 256]
+    num_filters = [input_shape[0]/8, input_shape[0]/4, input_shape[0]/2, input_shape[0]]
     skip_connections = []
 
     x = inputs
@@ -105,7 +105,7 @@ def encoder2(inputs):
     return x, skip_connections
 
 def decoder2(inputs, skip_1, skip_2):
-    num_filters = [256, 128, 64, 32]
+    num_filters = [input_shape[0], input_shape[0]/2, input_shape[0]/4, input_shape[0]/8]
     skip_2.reverse()
 
     x = inputs

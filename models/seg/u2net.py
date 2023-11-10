@@ -148,12 +148,14 @@ def u2net(input_shape, out_ch, int_ch, num_classes=1):
     return model
 
 def build_model(input_shape, num_classes=1):
-    out_ch = [64, 128, 256, 512, 512, 512, 512, 256, 128, 64, 64]
-    int_ch = [32, 32, 64, 128, 256, 256, 256, 128, 64, 32, 16]
+    out_ch = [input_shape[0]/8, input_shape[0]/4, input_shape[0]/2, input_shape[0], input_shape[0], input_shape[0], input_shape[0], 
+              input_shape[0]/2, input_shape[0]/4, input_shape[0]/8, input_shape[0]/8]
+    int_ch = [input_shape[0]/16, input_shape[0]/16, input_shape[0]/8, input_shape[0]/4, input_shape[0]/2, input_shape[0]/2, 
+              input_shape[0]/2, input_shape[0]/4, input_shape[0]/8, input_shape[0]/16, input_shape[0]/32]
     model = u2net(input_shape, out_ch, int_ch, num_classes=num_classes)
     return model
 
-def build_u2net_lite(input_shape, num_classes=1):
+def build_model_lite(input_shape, num_classes=1):
     out_ch = [64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64]
     int_ch = [16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16]
     model = u2net(input_shape, out_ch, int_ch, num_classes=num_classes)

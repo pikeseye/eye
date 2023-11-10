@@ -47,25 +47,25 @@ def decoder_block(x, skip, num_filters):
     x = multires_block(x, num_filters)
     return x
 
-def build_model(shape):
+def build_model(input_shape):
     """ Input """
-    inputs = Input(shape)
+    inputs = Input(input_shape)
 
     """ Encoder """
     p0 = inputs
-    s1, p1 = encoder_block(p0, 32, 4)
-    s2, p2 = encoder_block(p1, 64, 3)
-    s3, p3 = encoder_block(p2, 128, 2)
-    s4, p4 = encoder_block(p3, 256, 1)
+    s1, p1 = encoder_block(p0, input_shape[0]/8, 4)
+    s2, p2 = encoder_block(p1, input_shape[0]/4, 3)
+    s3, p3 = encoder_block(p2, input_shape[0]/2, 2)
+    s4, p4 = encoder_block(p3, input_shape[0], 1)
 
     """ Bridge """
     b1 = multires_block(p4, 512)
 
     """ Decoder """
-    d1 = decoder_block(b1, s4, 256)
-    d2 = decoder_block(d1, s3, 128)
-    d3 = decoder_block(d2, s2, 64)
-    d4 = decoder_block(d3, s1, 32)
+    d1 = decoder_block(b1, s4, input_shape[0])
+    d2 = decoder_block(d1, s3, input_shape[0]/2)
+    d3 = decoder_block(d2, s2, input_shape[0]/4)
+    d4 = decoder_block(d3, s1, input_shape[0]/8)
 
     """ Output """
     outputs = Conv2D(1, 1, padding="same", activation="sigmoid")(d4)
